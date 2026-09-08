@@ -1,0 +1,19 @@
+# 文件用途：仅允许构建所需源码进入 Docker 上下文，排除密钥、历史、Git 和本机依赖。
+**
+!Dockerfile
+!package.json
+!package-lock.json
+!next.config.ts
+!vite.config.ts
+!tsconfig.json
+!app/
+!app/**
+!components/
+!components/**
+!lib/
+!lib/**
+!public/
+!public/**
+!local-server/
+!local-server/*.py
+!local-server/requirements*.txt

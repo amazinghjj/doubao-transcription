@@ -1,0 +1,38 @@
+# 文件用途：构建并运行转写服务，默认开放局域网访问，并通过独立卷保留配置和历史。
+name: doubao-transcription
+services:
+  app:
+    build: .
+    image: doubao-transcription:local
+    init: true
+    restart: unless-stopped
+    ports:
+      - "${ASR_BIND_IP:-0.0.0.0}:${ASR_PORT:-8765}:${ASR_PORT:-8765}"
+    environment:
+      ASR_HOST: "0.0.0.0"
+      ASR_PORT: "${ASR_PORT:-8765}"
+      ASR_DATA_DIR: /app/data
+    volumes:
+      - asr_data:/app/data
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import os,urllib.request; urllib.request.build_opener(urllib.request.ProxyHandler({})).open('http://127.0.0.1:'+os.environ['ASR_PORT']+'/api/session', timeout=3).close()"
+      interval: 30s
+      timeout: 5s
+      start_period: 10s
+      retries: 3
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  asr_data:

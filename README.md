@@ -14,7 +14,26 @@
 - 本地保存任务历史，重新查看结果、保存修改、继续查询未完成任务。
 - 保存 API Key 和 TOS 配置，下次自动读取；敏感字段默认遮挡，可切换显示及修改。
 
-## 快速开始
+## Docker Compose 部署（推荐）
+
+Linux 安装 Docker Engine 和 Compose 插件；macOS 使用 Docker Desktop 或其他支持 Compose 的 Docker 环境。宿主机无需安装 Node.js、Python 或 FFmpeg。
+
+```bash
+git clone https://github.com/amazinghjj/doubao-transcription.git
+cd doubao-transcription
+docker compose up -d --build
+```
+
+访问 `http://服务设备的局域网IP:8765`，本机也可访问 `http://127.0.0.1:8765`。默认允许局域网访问，无需额外参数。网页配置和历史存入 Docker 数据卷，重建容器后保留。已有原生部署的 `data/` 不会自动导入，迁移方法见[部署指南](部署指南.md)。
+
+```bash
+docker compose logs --tail=100 -f  # 查看日志
+docker compose down              # 停止服务，保留数据卷
+```
+
+运行镜像在 Debian x86_64 实测约 **74 MB**，只包含 Python 服务、静态网页及音频专用 FFmpeg；Node.js、编译器、前端依赖和源码构建缓存仅存在于构建阶段。无需数据库或 Nginx 等额外容器。自定义端口、数据备份、升级见[部署指南](部署指南.md)。
+
+## 原生方式快速开始
 
 ### 1. 准备环境
 
@@ -81,7 +100,10 @@ bash start.sh
 ├── dist/client/             编译后的网页，运行时使用
 ├── dist/server/             构建辅助产物，本地部署不使用
 ├── data/                    个人配置和历史，不随安装包发布
-├── start.sh                 通用启动入口
+├── Dockerfile               分阶段构建精简运行镜像
+├── compose.yaml             容器启动、端口和数据卷配置
+├── .dockerignore            排除构建无关文件及个人数据
+├── start.sh                 原生部署启动入口
 ├── package.json             前端依赖与构建脚本
 ├── package-lock.json        前端依赖锁文件
 └── *.md                     项目文档
@@ -102,7 +124,7 @@ bash start.sh
 
 修改前端后重新构建并刷新页面；修改 Python 后端后重启服务。
 
-**运行入口是 `bash start.sh`，也可执行 `npm start` 调用同一个脚本。**`npm run dev` 的跨端口请求也尚未与后端来源校验整合；完整功能调试使用构建后访问 Flask 的流程。详情见开发维护文档。
+**容器运行入口为 `docker compose up -d --build`；原生运行入口为 `bash start.sh`，也可执行 `npm start`。**`npm run dev` 的跨端口请求也尚未与后端来源校验整合；完整功能调试使用构建后访问 Flask 的流程。详情见开发维护文档。
 
 如果更改了 Python 依赖，显式更新环境：
 
@@ -120,6 +142,8 @@ bash start.sh
 | 监听地址 | `ASR_HOST`，默认 `0.0.0.0`，允许局域网 IPv4 访问 |
 | 服务端口 | `ASR_PORT`，默认 `8765` |
 | 可选自动打开浏览器 | `ASR_OPEN_BROWSER=1` |
+
+容器部署的数据位于 `asr_data` 命名卷的 `/app/data`，不在项目目录；下表之外的原生环境参数不会自动传入容器，容器参数见部署指南。
 
 配置为明文 JSON，写入权限为 `600`。空密钥表示保留已有值，不会删除已保存密钥。配置接口会向访问网页返回当前值，以供显示和编辑。
 

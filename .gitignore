@@ -47,3 +47,6 @@ data/
 
 # Local authoring metadata
 /.openai/
+
+# Personal data backups
+asr-data-backup*.tar.gz
