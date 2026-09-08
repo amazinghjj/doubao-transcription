@@ -1,3 +1,4 @@
+# 文件用途：将任务状态、原始结果和编辑文字保存为本地历史记录，并提供查询。
 """Local task history. Credentials and audio URLs never enter this store."""
 import json
 import os

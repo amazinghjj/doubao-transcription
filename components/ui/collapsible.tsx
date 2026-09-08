@@ -1,3 +1,4 @@
+/* 文件用途：封装单个内容区域的展开与折叠，供页面复用；组件是否实际使用取决于页面引用。 */
 'use client';
 
 import { Collapsible as CollapsiblePrimitive } from '@base-ui/react/collapsible';

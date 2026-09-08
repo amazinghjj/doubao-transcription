@@ -1,3 +1,4 @@
+/* 文件用途：封装卡片标题、内容、描述和页脚布局，供页面复用；组件是否实际使用取决于页面引用。 */
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';

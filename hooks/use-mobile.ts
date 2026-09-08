@@ -1,3 +1,4 @@
+/* 文件用途：根据视口宽度判断是否为移动端布局，供组件响应式行为使用。 */
 import * as React from 'react';
 
 const MOBILE_BREAKPOINT = 768;

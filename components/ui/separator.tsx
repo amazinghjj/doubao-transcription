@@ -1,3 +1,4 @@
+/* 文件用途：封装水平或垂直分隔线，供页面复用；组件是否实际使用取决于页面引用。 */
 'use client';
 
 import { Separator as SeparatorPrimitive } from '@base-ui/react/separator';

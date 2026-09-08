@@ -1,3 +1,4 @@
+/* 文件用途：封装复选框和选中状态指示，供页面复用；组件是否实际使用取决于页面引用。 */
 'use client';
 
 import { Checkbox as CheckboxPrimitive } from '@base-ui/react/checkbox';

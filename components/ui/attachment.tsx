@@ -1,3 +1,4 @@
+/* 文件用途：封装附件卡片及其媒体、内容与状态展示，供页面复用；组件是否实际使用取决于页面引用。 */
 import * as React from 'react';
 import { mergeProps } from '@base-ui/react/merge-props';
 import { useRender } from '@base-ui/react/use-render';

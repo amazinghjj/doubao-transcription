@@ -1,3 +1,4 @@
+# 文件用途：提供本地 HTTP 服务、请求校验、配置与历史接口，并调用 TOS 和语音识别。
 import os, re, secrets, tempfile, subprocess, uuid, shutil
 from pathlib import Path
 from urllib.parse import urlsplit

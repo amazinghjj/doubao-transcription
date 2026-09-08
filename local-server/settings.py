@@ -1,3 +1,4 @@
+# 文件用途：读取和原子保存本地配置，校验字段并提供页面配置回填数据。
 """Portable local configuration for the authenticated loopback settings UI."""
 import json
 import os

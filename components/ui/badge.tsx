@@ -1,3 +1,4 @@
+/* 文件用途：封装状态徽标及其样式变体，供页面复用；组件是否实际使用取决于页面引用。 */
 import { mergeProps } from '@base-ui/react/merge-props';
 import { useRender } from '@base-ui/react/use-render';
 import { cva, type VariantProps } from 'class-variance-authority';

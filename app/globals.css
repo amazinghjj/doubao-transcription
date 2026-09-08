@@ -1,3 +1,4 @@
+/* 文件用途：定义工作台的全局主题、页面布局、组件样式与响应式规则。 */
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# 文件用途：检查 Python 环境、准备依赖，并启动 Linux 与 macOS 共用的本地服务。
 set -e
 cd "$(dirname "$0")"
 if ! command -v python3 >/dev/null 2>&1; then

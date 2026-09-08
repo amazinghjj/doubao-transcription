@@ -1,3 +1,4 @@
+/* 文件用途：封装分页导航和前后页入口，供页面复用；组件是否实际使用取决于页面引用。 */
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';

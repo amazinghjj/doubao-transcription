@@ -1,3 +1,4 @@
+/* 文件用途：封装悬停时显示的内容卡片，供页面复用；组件是否实际使用取决于页面引用。 */
 'use client';
 
 import { PreviewCard as PreviewCardPrimitive } from '@base-ui/react/preview-card';

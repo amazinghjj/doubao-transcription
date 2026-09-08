@@ -1,3 +1,4 @@
+/* 文件用途：封装支持滑动方向和停靠位置的抽屉面板，供页面复用；组件是否实际使用取决于页面引用。 */
 'use client';
 
 import * as React from 'react';

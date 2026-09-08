@@ -1,3 +1,4 @@
+# 文件用途：规定不提交到 Git 的个人数据、依赖环境、构建产物与缓存。
 # dependencies
 /node_modules
 /.pnp

@@ -1,3 +1,4 @@
+/* 文件用途：封装可保持选中状态的切换按钮，供页面复用；组件是否实际使用取决于页面引用。 */
 'use client';
 
 import { Toggle as TogglePrimitive } from '@base-ui/react/toggle';

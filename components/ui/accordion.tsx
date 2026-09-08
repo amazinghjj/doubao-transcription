@@ -1,3 +1,4 @@
+/* 文件用途：封装可展开和折叠的手风琴分组，供页面复用；组件是否实际使用取决于页面引用。 */
 import { Accordion as AccordionPrimitive } from '@base-ui/react/accordion';
 
 import { cn } from '@/lib/utils';

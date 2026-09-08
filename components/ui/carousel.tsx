@@ -1,3 +1,4 @@
+/* 文件用途：封装轮播容器、轮播项与前后切换，供页面复用；组件是否实际使用取决于页面引用。 */
 'use client';
 
 import * as React from 'react';

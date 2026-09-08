@@ -1,3 +1,4 @@
+/* 文件用途：封装导航菜单及弹出内容，供页面复用；组件是否实际使用取决于页面引用。 */
 import { NavigationMenu as NavigationMenuPrimitive } from '@base-ui/react/navigation-menu';
 import { cva } from 'class-variance-authority';
 

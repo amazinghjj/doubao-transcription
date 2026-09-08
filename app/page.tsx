@@ -1,3 +1,4 @@
+/* 文件用途：实现转写工作台的配置编辑、上传、任务查询、结果导出和历史交互。 */
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';

@@ -1,3 +1,4 @@
+/* 文件用途：封装模态对话框及标题、内容和关闭入口，供页面复用；组件是否实际使用取决于页面引用。 */
 'use client';
 
 import * as React from 'react';

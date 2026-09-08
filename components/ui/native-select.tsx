@@ -1,3 +1,4 @@
+/* 文件用途：封装原生下拉选择框的样式封装，供页面复用；组件是否实际使用取决于页面引用。 */
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';

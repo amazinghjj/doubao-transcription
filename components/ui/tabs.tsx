@@ -1,3 +1,4 @@
+/* 文件用途：封装标签页切换与对应内容面板，供页面复用；组件是否实际使用取决于页面引用。 */
 'use client';
 
 import { Tabs as TabsPrimitive } from '@base-ui/react/tabs';

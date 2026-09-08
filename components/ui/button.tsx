@@ -1,3 +1,4 @@
+/* 文件用途：封装通用按钮及尺寸、外观变体，供页面复用；组件是否实际使用取决于页面引用。 */
 import { Button as ButtonPrimitive } from '@base-ui/react/button';
 import { cva, type VariantProps } from 'class-variance-authority';
 

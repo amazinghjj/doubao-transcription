@@ -1,3 +1,4 @@
+/* 文件用途：封装键盘快捷键标记，供页面复用；组件是否实际使用取决于页面引用。 */
 import { cn } from '@/lib/utils';
 
 function Kbd({ className, ...props }: React.ComponentProps<'kbd'>) {
