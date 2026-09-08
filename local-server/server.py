@@ -1,5 +1,5 @@
 # 文件用途：提供本地 HTTP 服务、请求校验、配置与历史接口，并调用 TOS 和语音识别。
-import os, re, secrets, tempfile, subprocess, uuid, shutil
+import os, re, secrets, tempfile, subprocess, uuid, shutil, ipaddress
 from pathlib import Path
 from urllib.parse import urlsplit
 import requests
@@ -14,16 +14,37 @@ app.config['MAX_CONTENT_LENGTH'] = 512 * 1024 * 1024
 TOKEN = secrets.token_urlsafe(32)
 BASE = 'https://openspeech.bytedance.com/api/v3/auc/bigmodel'
 PORT = int(os.getenv('ASR_PORT', '8765'))
+HOST = os.getenv('ASR_HOST', '0.0.0.0').strip()
+LAN_NETWORKS = tuple(ipaddress.ip_network(n) for n in
+                     ('10.0.0.0/8', '172.16.0.0/12', '192.168.0.0/16'))
+
+def is_lan_address(value):
+    try:
+        address = ipaddress.IPv4Address(value)
+        return any(address in network for network in LAN_NETWORKS)
+    except ipaddress.AddressValueError:
+        return False
+
+if HOST not in ('127.0.0.1', '0.0.0.0') and not is_lan_address(HOST):
+    raise ValueError('ASR_HOST 必须是 127.0.0.1、0.0.0.0 或局域网 IPv4 地址。')
+
+def allowed_host(value):
+    # 只接受明确的 IP / localhost，避免任意域名绕过 Host 校验。
+    if value in (f'127.0.0.1:{PORT}', f'localhost:{PORT}'):
+        return True
+    host, separator, port = value.rpartition(':')
+    return (HOST != '127.0.0.1' and separator == ':' and port == str(PORT)
+            and is_lan_address(host) and (HOST == '0.0.0.0' or host == HOST))
 
 @app.before_request
 def protect():
-    if request.host not in (f'127.0.0.1:{PORT}', f'localhost:{PORT}'):
+    if not allowed_host(request.host):
         abort(403)
     if request.method == 'POST':
         if request.headers.get('X-Local-Token') != TOKEN:
             abort(403)
         origin = request.headers.get('Origin')
-        if origin and origin not in (f'http://127.0.0.1:{PORT}', f'http://localhost:{PORT}'):
+        if origin and origin != f'http://{request.host}':
             abort(403)
 
 @app.after_request
@@ -199,22 +220,26 @@ def assets(path):
     return send_from_directory(ROOT / 'dist/client', path)
 
 if __name__ == '__main__':
-    print(f'录音转文字：http://127.0.0.1:{PORT}', flush=True)
+    browser_host = '127.0.0.1' if HOST == '0.0.0.0' else HOST
+    print(f'录音转文字：http://{browser_host}:{PORT}', flush=True)
+    if HOST != '127.0.0.1':
+        print(f'局域网访问：http://<本机局域网IPv4地址>:{PORT}（监听 {HOST}）', flush=True)
+        print('局域网设备共用配置和历史，并可查看密钥；请仅在可信内网使用。', flush=True)
     if os.getenv('ASR_OPEN_BROWSER') == '1':
         import threading, webbrowser, socket
         probe = socket.socket()
-        if probe.connect_ex(('127.0.0.1', PORT)) == 0:
+        if probe.connect_ex((browser_host, PORT)) == 0:
             probe.close()
             try:
                 local = requests.Session()
                 local.trust_env = False
-                if local.get(f'http://127.0.0.1:{PORT}/api/session', timeout=2).json().get('app') == 'local-asr':
-                    webbrowser.open(f'http://127.0.0.1:{PORT}')
+                if local.get(f'http://{browser_host}:{PORT}/api/session', timeout=2).json().get('app') == 'local-asr':
+                    webbrowser.open(f'http://{browser_host}:{PORT}')
                     raise SystemExit(0)
             except requests.RequestException:
                 pass
             print('端口已被其他程序使用，请关闭该程序后重试。')
             raise SystemExit(1)
         probe.close()
-        threading.Timer(1.0, lambda: webbrowser.open(f'http://127.0.0.1:{PORT}')).start()
-    app.run(host='127.0.0.1', port=PORT, debug=False, threaded=True)
+        threading.Timer(1.0, lambda: webbrowser.open(f'http://{browser_host}:{PORT}')).start()
+    app.run(host=HOST, port=PORT, debug=False, threaded=True)
