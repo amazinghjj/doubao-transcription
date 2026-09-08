@@ -75,7 +75,7 @@ bash start.sh
 录音转文字/
 ├── app/                     网页主页面、布局和样式源码
 ├── components/              界面组件
-├── hooks/、lib/              前端辅助代码
+├── lib/                     前端辅助代码
 ├── public/                  静态资源和操作说明源码
 ├── local-server/            Python 后端源码与依赖清单
 ├── dist/client/             编译后的网页，运行时使用
@@ -102,7 +102,7 @@ bash start.sh
 
 修改前端后重新构建并刷新页面；修改 Python 后端后重启服务。
 
-**运行入口是 `bash start.sh`。** 当前 `npm start` 仍为脚手架的托管工具命令，不适用于本地部署。`npm run dev` 的跨端口请求也尚未与后端来源校验整合；完整功能调试使用构建后访问 Flask 的流程。详情见开发维护文档。
+**运行入口是 `bash start.sh`，也可执行 `npm start` 调用同一个脚本。**`npm run dev` 的跨端口请求也尚未与后端来源校验整合；完整功能调试使用构建后访问 Flask 的流程。详情见开发维护文档。
 
 如果更改了 Python 依赖，显式更新环境：
 
